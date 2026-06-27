@@ -5,4 +5,4 @@ RUN npm ci
 
 FROM base AS development
 COPY . .
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "dev"]

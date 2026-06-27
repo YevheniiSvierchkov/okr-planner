@@ -17,7 +17,7 @@ services:
       timeout: 5s
       retries: 5
   backend:
-    build: 
+    build:
       context: ./backend
       target: development
     container_name: okr-planner-backend
@@ -30,6 +30,18 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    container_name: okr-planner-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 volumes:
   postgres_data:
