@@ -6,13 +6,13 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: okr
-      POSTGRES_PASSWORD: okr
-      POSTGRES_DB: okr_planner
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U okr -d okr_planner"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -24,6 +24,8 @@ services:
     restart: unless-stopped
     ports:
       - "8877:8877"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
     depends_on:
       db:
         condition: service_healthy
